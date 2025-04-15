@@ -1,17 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import Header from "@/widgets/header/header";
 import Providers from "./providers";
-import { Sidebar, SidebarHeader } from "@/shared/ui/sidebar";
-import {
-  ResizableHandle,
-  ResizablePanel,
-  ResizablePanelGroup,
-} from "@/shared/ui/resizable";
-import { SidebarIcon } from "lucide-react";
-import Link from "next/link";
-import { MySidebar } from "@/widgets/my-sidebar/my-sidebar";
+import { ResizableLayout } from "@/widgets/resizable-layout/resizable-layout";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -39,28 +30,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <Providers>
-          <ResizablePanelGroup
-            direction="horizontal"
-            className="min-h-svh w-full"
-          >
-            {/* Sidebar Panel */}
-            <ResizablePanel
-              defaultSize={20}
-              minSize={5}
-              maxSize={20}
-              className="hidden lg:block"
-            >
-							<MySidebar/>
-            </ResizablePanel>
-            <ResizableHandle withHandle className="hidden lg:flex" />
-            <ResizablePanel defaultSize={80} className="flex flex-col">
-              <Header />
-              <main className="flex-1 p-6 max-w-7xl mx-auto">{children}</main>
-              <footer className="bg-background border-t border-border py-4 text-center text-muted-foreground">
-                <p>© 2025 JustWork</p>
-              </footer>
-            </ResizablePanel>
-          </ResizablePanelGroup>
+          <ResizableLayout>{children}</ResizableLayout>
         </Providers>
       </body>
     </html>
