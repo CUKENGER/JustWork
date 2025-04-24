@@ -1,6 +1,6 @@
 import { cn } from "@/shared/lib/utils";
 import { Sidebar } from "@/shared/ui/sidebar";
-import { Briefcase, Home, MessageSquare, Settings, User } from "lucide-react";
+import { Briefcase, Home, LogIn, MessageSquare, RegexIcon, Settings, User } from "lucide-react";
 import Link from "next/link";
 
 export const MySidebar = ({ isCollapsed }: { isCollapsed: boolean }) => {
@@ -10,6 +10,8 @@ export const MySidebar = ({ isCollapsed }: { isCollapsed: boolean }) => {
     { href: "/profile", label: "Профиль", icon: User },
     { href: "/messages", label: "Сообщения", icon: MessageSquare },
     { href: "/settings", label: "Настройки", icon: Settings },
+    { href: "/login", label: "Login", icon: LogIn },
+    { href: "/register", label: "Register", icon: RegexIcon },
   ];
 
   return (

@@ -1,0 +1,104 @@
+FUNCTION  <SNR>53_SynSet()
+    Defined: /usr/share/nvim/runtime/syntax/synload.vim:27
+Called 6 times
+Total time:   0.000226
+ Self time:   0.000226
+
+count  total (s)   self (s)
+                              " clear syntax for :set syntax=OFF  and any syntax name that doesn't exist
+    6              0.000018   syn clear
+    6              0.000022   if exists("b:current_syntax")
+                                unlet b:current_syntax
+    6              0.000004   endif
+                            
+    6              0.000035   0verbose let s = expand("<amatch>")
+    6              0.000010   if s == "ON"
+                                " :set syntax=ON
+                                if &filetype == ""
+                                  echohl ErrorMsg
+                                  echo "filetype unknown"
+                                  echohl None
+                                endif
+                                let s = &filetype
+    6              0.000007   elseif s == "OFF"
+                                let s = ""
+    6              0.000002   endif
+                            
+    6              0.000005   if s != ""
+                                " Load the syntax file(s).  When there are several, separated by dots,
+                                " load each in sequence.  Skip empty entries.
+                                for name in split(s, '\.')
+                                  if !empty(name)
+                                    " XXX: "[.]" in the first pattern makes it a wildcard on Windows
+                                    exe $'runtime! syntax/{name}[.]{{vim,lua}} syntax/{name}/*.{{vim,lua}}'
+                                  endif
+                                endfor
+    6              0.000003   endif
+
+FUNCTION  <SNR>1_LoadFTPlugin()
+    Defined: /usr/share/nvim/runtime/ftplugin.vim:15
+Called 6 times
+Total time:   0.013059
+ Self time:   0.013059
+
+count  total (s)   self (s)
+    6              0.000048     if exists("b:undo_ftplugin")
+                                  exe b:undo_ftplugin
+                                  unlet! b:undo_ftplugin b:did_ftplugin
+    6              0.000007     endif
+                            
+    6              0.000035     let s = expand("<amatch>")
+    6              0.000013     if s != ""
+    6              0.000033       if &cpo =~# "S" && exists("b:did_ftplugin")
+                            	" In compatible mode options are reset to the global values, need to
+                            	" set the local values also when a plugin was already used.
+                            	unlet b:did_ftplugin
+    6              0.000003       endif
+                            
+                                  " When there is a dot it is used to separate filetype names.  Thus for
+                                  " "aaa.bbb" load "aaa" and then "bbb".
+   12              0.000054       for name in split(s, '\.')
+                                    " Load Lua ftplugins after Vim ftplugins _per directory_
+                                    " TODO(clason): use nvim__get_runtime when supports globs and modeline
+                                    " XXX: "[.]" in the first pattern makes it a wildcard on Windows
+    6              0.012747         exe $'runtime! ftplugin/{name}[.]{{vim,lua}} ftplugin/{name}_*.{{vim,lua}} ftplugin/{name}/*.{{vim,lua}}'
+   12              0.000018       endfor
+    6              0.000004     endif
+
+FUNCTION  <SNR>2_LoadIndent()
+    Defined: /usr/share/nvim/runtime/indent.vim:14
+Called 6 times
+Total time:   0.003936
+ Self time:   0.003936
+
+count  total (s)   self (s)
+    6              0.000021     if exists("b:undo_indent")
+                                  exe b:undo_indent
+                                  unlet! b:undo_indent b:did_indent
+    6              0.000004     endif
+    6              0.000021     let s = expand("<amatch>")
+    6              0.000015     if s != ""
+    6              0.000011       if exists("b:did_indent")
+                            	unlet b:did_indent
+    6              0.000003       endif
+                            
+                                  " When there is a dot it is used to separate filetype names.  Thus for
+                                  " "aaa.bbb" load "indent/aaa.vim" and then "indent/bbb.vim".
+   12              0.000037       for name in split(s, '\.')
+                                    " XXX: "[.]" in the pattern makes it a wildcard on Windows
+    6              0.003752         exe $'runtime! indent/{name}[.]{{vim,lua}}'
+   12              0.000014       endfor
+    6              0.000004     endif
+
+FUNCTIONS SORTED ON TOTAL TIME
+count  total (s)   self (s)  function
+    6   0.013059             <SNR>1_LoadFTPlugin()
+    6   0.003936             <SNR>2_LoadIndent()
+    6   0.000226             <SNR>53_SynSet()
+
+FUNCTIONS SORTED ON SELF TIME
+count  total (s)   self (s)  function
+    6              0.013059  <SNR>1_LoadFTPlugin()
+    6              0.003936  <SNR>2_LoadIndent()
+    6              0.000226  <SNR>53_SynSet()
+

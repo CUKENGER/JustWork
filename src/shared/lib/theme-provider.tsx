@@ -1,7 +1,12 @@
-// src/shared/lib/theme-provider.tsx
 "use client";
 
-import { createContext, useContext, useState, useEffect, ReactNode } from "react";
+import {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  ReactNode,
+} from "react";
 
 interface ThemeContextType {
   theme: "light" | "dark";
@@ -18,32 +23,57 @@ export function useTheme() {
   return context;
 }
 
-export function ThemeProvider({ children }: { children: ReactNode }): ReactNode {
-  const [theme, setTheme] = useState<"light" | "dark">("light");
+const getInitialTheme = (): "light" | "dark" => {
+  // На сервере всегда возвращаем "light"
+  if (typeof window === "undefined") return "light";
+  try {
+    const savedTheme = localStorage.getItem("theme") as "light" | "dark" | null;
+    if (savedTheme) return savedTheme;
+    return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+  } catch (e) {
+    console.warn("Не удалось прочитать localStorage:", e);
+    return "light";
+  }
+};
+
+export function ThemeProvider({
+  children,
+}: {
+  children: ReactNode;
+}): ReactNode {
+  const [theme, setTheme] = useState<"light" | "dark">("light"); // Начальная тема всегда "light" для сервера
 
   useEffect(() => {
-    const savedTheme = localStorage.getItem("theme") as "light" | "dark" | null;
-    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-    const initialTheme = savedTheme || (prefersDark ? "dark" : "light");
+    // Применяем тему только на клиенте
+    const initialTheme = getInitialTheme();
     setTheme(initialTheme);
-    if (initialTheme === "dark") {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
+    document.documentElement.classList.toggle("dark", initialTheme === "dark");
+
+    const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+    const handleChange = (e: MediaQueryListEvent) => {
+      const newTheme = e.matches ? "dark" : "light";
+      setTheme(newTheme);
+      document.documentElement.classList.toggle("dark", newTheme === "dark");
+      try {
+        localStorage.setItem("theme", newTheme);
+      } catch (e) {
+        console.warn("Не удалось записать в localStorage:", e);
+      }
+    };
+
+    mediaQuery.addEventListener("change", handleChange);
+    return () => mediaQuery.removeEventListener("change", handleChange);
   }, []);
 
   const toggleTheme = () => {
-    setTheme((prev) => {
-      const newTheme = prev === "light" ? "dark" : "light";
-      if (newTheme === "dark") {
-        document.documentElement.classList.add("dark");
-      } else {
-        document.documentElement.classList.remove("dark");
-      }
+    const newTheme = theme === "light" ? "dark" : "light";
+    setTheme(newTheme);
+    document.documentElement.classList.toggle("dark", newTheme === "dark");
+    try {
       localStorage.setItem("theme", newTheme);
-      return newTheme;
-    });
+    } catch (e) {
+      console.warn("Не удалось записать в localStorage:", e);
+    }
   };
 
   return (
