@@ -19,7 +19,7 @@ export const MySidebar = ({
   handleClose?: () => void;
 }) => {
   const navItems = [
-    { href: "/", label: "Главная", icon: Home },
+    { href: "/dashboard", label: "Главная", icon: Home },
     { href: "/projects", label: "Проекты", icon: Briefcase },
     { href: "/profile", label: "Профиль", icon: User },
     { href: "/messages", label: "Сообщения", icon: MessageSquare },

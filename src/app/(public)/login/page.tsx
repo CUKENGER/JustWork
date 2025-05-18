@@ -24,6 +24,10 @@ const loginSchema = z.object({
 	password: z.string().min(6, 'Пароль должен быть минимум 6 символов'),
 })
 
+const errorMessages: Record<string, string> = {
+	CredentialsSignin: 'Неверный логин или пароль',
+}
+
 export default function Login() {
 	const router = useRouter()
 	const [isLoading, setIsLoading] = useState(false)
@@ -45,20 +49,24 @@ export default function Login() {
 		})
 
 		if (res?.ok) {
-			router.push('/')
+			router.push('/dashboard')
 		} else {
-			form.setError('root', { message: 'Неверные данные' })
+			const rawErrorMessage =
+				res?.error || 'Произошла ошибка. Попробуйте еще раз.'
+			const userFriendlyMessage =
+				errorMessages[rawErrorMessage] || rawErrorMessage
+			form.setError('root', { message: userFriendlyMessage })
 		}
 		setIsLoading(false)
 	}
 
 	return (
-		<div className='flex items-center justify-center h-full'>
+		<div className='flex items-center justify-center h-full w-full'>
 			<div className='sm:p-8 sm:pt-4 p-4 rounded-lg bg-card shadow-lg w-full max-w-md'>
-				<h2 className='text-2xl Continuing bold mb-4 text-center'>Login</h2>
+				<h2 className='text-2xl font-bold mb-4 text-center'>Login</h2>
 				<Form {...form}>
 					<form onSubmit={form.handleSubmit(onSubmit)}>
-						<div className='flex flex-col gap-4'>
+						<div className='flex flex-col gap-2'>
 							<div className='flex flex-col gap-4'>
 								<FormField
 									control={form.control}

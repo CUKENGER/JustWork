@@ -11,7 +11,7 @@ export default function Register() {
 	const { register, isLoading, error, form } = useRegister()
 
 	return (
-		<div className='flex flex-col items-center justify-center py-12 px-4 sm:px-6 lg:px-8 h-full'>
+		<div className='flex flex-col items-center justify-center py-12 px-4 sm:px-6 lg:px-8 h-full w-full'>
 			<div className='sm:p-8 sm:pt-4 p-4 rounded-lg bg-card shadow-lg w-full max-w-xl mx-auto'>
 				<h2 className='text-2xl font-bold mb-4 text-center'>Register</h2>
 				<Form {...form}>

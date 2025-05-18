@@ -10,6 +10,7 @@ import { ImperativePanelHandle } from "react-resizable-panels";
 import { Header } from "../header/header";
 import { MySidebar } from "../my-sidebar/my-sidebar";
 import { SideModal } from "@/shared/ui/side-modal";
+import { Footer } from "../footer/footer";
 
 export const ResizableLayout = ({ children }: { children: ReactNode }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -48,7 +49,7 @@ export const ResizableLayout = ({ children }: { children: ReactNode }) => {
         maxSize={20}
         className="hidden lg:block"
       >
-        <section ref={containerRef} className="">
+        <section ref={containerRef}>
           <MySidebar isCollapsed={isCollapsed} />
         </section>
       </ResizablePanel>
@@ -56,9 +57,7 @@ export const ResizableLayout = ({ children }: { children: ReactNode }) => {
       <ResizablePanel defaultSize={80} className="flex flex-col">
         <Header handleOpen={handleOpen} />
         <main className="flex-1 p-6 overflow-auto">{children}</main>
-        <footer className="bg-background border-t border-border py-4 text-center text-muted-foreground">
-          <p>© 2025 JustWork</p>
-        </footer>
+				<Footer/>
       </ResizablePanel>
       <SideModal isOpen={isOpen} handleClose={handleClose}>
         <MySidebar isCollapsed={false} handleClose={handleClose} />
