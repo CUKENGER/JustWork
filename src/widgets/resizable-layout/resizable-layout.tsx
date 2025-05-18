@@ -9,11 +9,32 @@ import { RefObject, useState, useEffect, ReactNode, useRef } from "react";
 import { ImperativePanelHandle } from "react-resizable-panels";
 import { Header } from "../header/header";
 import { MySidebar } from "../my-sidebar/my-sidebar";
+import { SideModal } from "@/shared/ui/side-modal";
 
 export const ResizableLayout = ({ children }: { children: ReactNode }) => {
+  const [isOpen, setIsOpen] = useState(false);
   const sidebarRef = useRef<ImperativePanelHandle>(null);
   const containerRef = useRef<HTMLElement>(null);
   const isCollapsed = usePanelWidth(containerRef);
+
+  const handleClose = () => {
+    setIsOpen(false);
+  };
+
+  const handleOpen = () => {
+    setIsOpen(true);
+  };
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 1024) {
+        setIsOpen(false);
+      }
+    };
+    window.addEventListener("resize", handleResize);
+    handleResize();
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   return (
     <ResizablePanelGroup
@@ -33,14 +54,15 @@ export const ResizableLayout = ({ children }: { children: ReactNode }) => {
       </ResizablePanel>
       <ResizableHandle withHandle className="hidden lg:flex" />
       <ResizablePanel defaultSize={80} className="flex flex-col">
-        <Header />
-        <main className="flex-1 p-6 max-w-7xl mx-auto overflow-auto">
-          {children}
-        </main>
+        <Header handleOpen={handleOpen} />
+        <main className="flex-1 p-6 overflow-auto">{children}</main>
         <footer className="bg-background border-t border-border py-4 text-center text-muted-foreground">
           <p>© 2025 JustWork</p>
         </footer>
       </ResizablePanel>
+      <SideModal isOpen={isOpen} handleClose={handleClose}>
+        <MySidebar isCollapsed={false} handleClose={handleClose} />
+      </SideModal>
     </ResizablePanelGroup>
   );
 };

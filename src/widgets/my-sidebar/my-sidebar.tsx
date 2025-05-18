@@ -1,9 +1,23 @@
 import { cn } from "@/shared/lib/utils";
 import { Sidebar } from "@/shared/ui/sidebar";
-import { Briefcase, Home, LogIn, MessageSquare, RegexIcon, Settings, User } from "lucide-react";
+import {
+  Briefcase,
+  Home,
+  LogIn,
+  MessageSquare,
+  RegexIcon,
+  Settings,
+  User,
+} from "lucide-react";
 import Link from "next/link";
 
-export const MySidebar = ({ isCollapsed }: { isCollapsed: boolean }) => {
+export const MySidebar = ({
+  isCollapsed,
+  handleClose,
+}: {
+  isCollapsed: boolean;
+  handleClose?: () => void;
+}) => {
   const navItems = [
     { href: "/", label: "Главная", icon: Home },
     { href: "/projects", label: "Проекты", icon: Briefcase },
@@ -15,13 +29,14 @@ export const MySidebar = ({ isCollapsed }: { isCollapsed: boolean }) => {
   ];
 
   return (
-    <Sidebar>
-      <div className={cn(
-				"h-full p-4 flex flex-col",
-				isCollapsed && 'p-1'
-			)}>
-        <div className={cn("mb-6", isCollapsed && 'p-2')}>
-          <Link href="/" className="text-xl font-bold text-foreground">
+    <Sidebar className="bg-background">
+      <div className={cn("h-full p-4 flex flex-col", isCollapsed && "p-1")}>
+        <div className={cn("mb-6", isCollapsed && "p-2")}>
+          <Link
+            href="/"
+            className="text-xl font-bold text-foreground"
+            onClick={handleClose}
+          >
             {isCollapsed ? "JW" : "JustWork"}
           </Link>
         </div>
@@ -29,11 +44,12 @@ export const MySidebar = ({ isCollapsed }: { isCollapsed: boolean }) => {
           <nav className="flex flex-col gap-4 items-center">
             {navItems.map((item) => (
               <Link
+                onClick={handleClose}
                 key={item.href}
                 href={item.href}
                 className={cn(
                   "p-2 rounded-md text-foreground hover:bg-muted transition-colors",
-                  "text-sm font-medium w-full flex justify-center"
+                  "text-sm font-medium w-full flex justify-center",
                 )}
               >
                 <item.icon className="h-5 w-5 flex-shrink-0" />
@@ -44,6 +60,7 @@ export const MySidebar = ({ isCollapsed }: { isCollapsed: boolean }) => {
           <nav className={cn("flex-1")}>
             {navItems.map((item) => (
               <Link
+                onClick={handleClose}
                 key={item.href}
                 href={item.href}
                 className={cn(

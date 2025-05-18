@@ -3,12 +3,14 @@
 
 import { useTheme } from "@/shared/lib/theme-provider";
 import { Button } from "@/shared/ui/button";
-import { Sheet, SheetTrigger, SheetContent, SheetHeader, SheetDescription, SheetTitle } from "@/shared/ui/sheet";
-import { Menu, Moon, Sun } from "lucide-react";
+import { Moon, Sun } from "lucide-react";
 import Link from "next/link";
-import { MySidebar } from "../my-sidebar/my-sidebar";
 
-export const Header = () => {
+interface PropTypes {
+	handleOpen: () => void
+}
+
+export const Header = ({handleOpen}: PropTypes) => {
   const { theme, toggleTheme } = useTheme();
 
   return (
@@ -33,31 +35,11 @@ export const Header = () => {
             <span className="sr-only">Переключить тему</span>
           </Button>
 
-          <div className="lg:hidden">
-            <Sheet>
-              <SheetTrigger asChild>
-                <Button
-                  variant="outline"
-                  size="icon"
-                  className="rounded-full cursor-pointer"
-                >
-                  <Menu className="h-5 w-5" />
-                  <span className="sr-only">Открыть меню</span>
-                </Button>
-              </SheetTrigger>
-              <SheetContent side="left" className="p-0 w-[18rem]">
-                <SheetHeader className="sr-only">
-                  <SheetTitle>Sidebar</SheetTitle>
-                  <SheetDescription>
-                    Displays the mobile sidebar.
-                  </SheetDescription>
-                </SheetHeader>
-                <MySidebar isCollapsed={false} />
-              </SheetContent>
-            </Sheet>
+          <div className="lg:hidden" onClick={handleOpen}>
+            <Button>Menu</Button>
           </div>
         </div>
       </div>
     </header>
   );
-}
+};
