@@ -1,4 +1,4 @@
-import { Home } from '@/pages';
+import { Home, NotFound } from '@/pages';
 
 export enum PRIVATE_ROUTES {}
 
