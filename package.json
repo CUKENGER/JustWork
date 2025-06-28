@@ -1,0 +1,31 @@
+{
+	"name": "justwork",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"frontend:dev": "pnpm -r --filter frontend dev",
+		"backend:dev": "pnpm -r --filter backend start:dev",
+		"lint": "pnpm -r lint",
+		"format": "pnpm -r format",
+		"prepare": "husky install"
+	},
+	"lint-staged": {
+		"packages/frontend/**/*.{js,jsx,ts,tsx}": [
+			"pnpm --filter frontend lint",
+			"pnpm --filter frontend format"
+		],
+		"packages/backend/**/*.{js,ts}": [
+			"pnpm --filter backend lint",
+			"pnpm --filter backend format"
+		]
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"packageManager": "pnpm@10.12.3",
+	"devDependencies": {
+		"husky": "^9.1.7",
+		"lint-staged": "^16.1.2"
+	}
+}
