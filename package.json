@@ -12,10 +12,12 @@
 	},
 	"lint-staged": {
 		"packages/frontend/**/*.{js,jsx,ts,tsx}": [
+			"pnpm --filter frontend exec tsc --noEmit",
 			"pnpm --filter frontend lint",
 			"pnpm --filter frontend format"
 		],
 		"packages/backend/**/*.{js,ts}": [
+      "pnpm --filter backend exec tsc --noEmit",
 			"pnpm --filter backend lint",
 			"pnpm --filter backend format"
 		]

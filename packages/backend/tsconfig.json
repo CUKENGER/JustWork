@@ -11,16 +11,21 @@
     "outDir": "./dist",
     "baseUrl": "./src",
     "paths": {
-      "@/*": [""]
+      "@/*": [
+        ""
+      ]
     },
-    "incremental": true,
+    "incremental": false,
     "skipLibCheck": true,
     "strictNullChecks": true,
     "noImplicitAny": true,
     "strictBindCallApply": true,
     "forceConsistentCasingInFileNames": true,
-    "noFallthroughCasesInSwitch": true,
-		"exclude": ["node_modules", "dist", "static/**/*"]
-  }
+    "noFallthroughCasesInSwitch": true
+  },
+  "exclude": [
+    "node_modules",
+    "dist",
+    "static/**/*"
+  ]
 }
-
