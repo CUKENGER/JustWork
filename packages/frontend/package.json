@@ -10,7 +10,7 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "prepare": "cd .. && husky install frontend/.husky",
-    "typecheck": "tsc --noEmit --project tsconfig.json"
+    "typecheck": "tsc --noEmit --project tsconfig.app.json"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.81.5",
