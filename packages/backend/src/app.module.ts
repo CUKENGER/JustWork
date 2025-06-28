@@ -5,7 +5,6 @@ import { ThrottlerModule } from '@nestjs/throttler';
 import { LoggerModule } from 'nestjs-pino';
 import { APP_FILTER } from '@nestjs/core';
 import { AllExceptionsFilter } from 'exceptions/allExceptionFilter';
-import { UserModule } from 'models/user/user.module';
 
 @Module({
   imports: [
